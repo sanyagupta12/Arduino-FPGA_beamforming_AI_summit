@@ -1,4 +1,3 @@
-README_CONTENT = r"""
 # 🎧 Real-Time Adaptive Beamforming Using the Frost Algorithm  
 *A Multi-Microphone Audio Enhancement System*
 
