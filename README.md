@@ -123,17 +123,4 @@ This system behaves like a **software-defined directional ear**:
 
 - O. L. Frost III, *An Algorithm for Linearly Constrained Adaptive Array Processing*, Proceedings of the IEEE, 1972
 
----
 
-## 💬 Final Note
-
-This project serves as a **foundation for real-world directional audio systems**, ranging from **hearing aids** to **smart classrooms** and **conference rooms**.
-"""
-
-def write_readme(filename="README.md"):
-    with open(filename, "w", encoding="utf-8") as f:
-        f.write(README_CONTENT.strip())
-    print(f"✅ {filename} has been created successfully.")
-
-if __name__ == "__main__":
-    write_readme()
