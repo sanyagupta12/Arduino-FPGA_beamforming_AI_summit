@@ -1,231 +1,139 @@
-🎧 Real-Time Adaptive Beamforming Using the Frost Algorithm
+README_CONTENT = r"""
+# 🎧 Real-Time Adaptive Beamforming Using the Frost Algorithm  
+*A Multi-Microphone Audio Enhancement System*
 
-A Multi-Microphone Audio Enhancement System
+---
 
-🌟 Overview
+## 🌟 Overview
 
-This project implements a real-time adaptive beamformer using the Frost constrained LMS algorithm, operating directly on live multi-microphone audio streams received over a serial interface.
+This project implements a **real-time adaptive beamformer** using the **Frost constrained LMS algorithm**, operating directly on **live multi-microphone audio streams** received over a serial interface.
 
 The system:
+- Streams **synchronized audio samples from 4 microphones**
+- Applies **adaptive spatial filtering** to suppress noise and interference
+- Preserves sound from a **desired look direction**
+- Outputs a **clean, single-channel enhanced audio signal**
+- Saves the processed output as a `.wav` file for analysis or playback
 
-Streams synchronized audio samples from 4 microphones
+The core idea is simple but powerful:  
+> *Let the system continuously learn the acoustic environment and automatically suppress unwanted sound while keeping the desired signal intact.*
 
-Applies adaptive spatial filtering to suppress noise and interference
+---
 
-Preserves sound from a desired look direction
+## 🧠 Why the Frost Algorithm?
 
-Outputs a clean, single-channel enhanced audio signal
+Unlike simple delay-and-sum beamforming, the **Frost algorithm** introduces **hard linear constraints** that guarantee:
+- **Distortionless response** in the desired direction
+- **Adaptive noise minimization** elsewhere
+- **Numerical stability over long runtimes**
 
-Saves the processed output as a .wav file for analysis or playback
+This makes it ideal for **assistive listening, smart audio capture, and embedded real-time systems**, as originally described in Frost’s seminal 1972 work on constrained adaptive arrays.
 
-The core idea is simple but powerful:
+---
 
-Let the system continuously learn the acoustic environment and automatically suppress unwanted sound while keeping the desired signal intact.
+## 🎯 Primary Application: Hearing Aid / Assistive Listening Device
 
-🧠 Why the Frost Algorithm?
+This project is **primarily designed with hearing aids in mind**.
 
-Unlike simple delay-and-sum beamforming, the Frost algorithm introduces hard linear constraints that guarantee:
+### Problem
+People with hearing loss often struggle not because sounds are quiet—but because **everything is loud at once**:
+- Background chatter
+- Traffic
+- Room reverberation
+- Competing speakers
 
-Distortionless response in the desired direction
+### Solution
+This system behaves like a **software-defined directional ear**:
+- Focuses on the speaker **directly in front of the listener**
+- Suppresses noise from other directions
+- Continuously adapts as the environment changes
 
-Adaptive noise minimization elsewhere
+### Why This Matters
+✔️ Clear speech in noisy environments  
+✔️ No need for pre-recorded calibration  
+✔️ Works in real time  
+✔️ Suitable for low-power embedded hardware  
 
-Numerical stability over long runtimes
+---
 
-This makes it ideal for assistive listening, smart audio capture, and embedded real-time systems, as originally described in Frost’s seminal 1972 work on constrained adaptive arrays 
+## 🧩 Additional Applications
 
-frost beamforming
+### 🗣️ Smart Conference Room Speaker System
 
-.
+- Button-controlled or motorized steering
+- Focuses on the active speaker
+- Suppresses keyboard noise, HVAC, and side conversations
 
-🎯 Primary Application: Hearing Aid / Assistive Listening Device
+### 🎓 Classroom Lecture Recording Device
 
-This project is primarily designed with hearing aids in mind.
+- Directional capture of instructor audio
+- Noise suppression in large rooms
+- Clean recordings for online education and accessibility
 
-Problem
+---
 
-People with hearing loss often struggle not because sounds are quiet—but because everything is loud at once:
+## 🧱 System Architecture
 
-Background chatter
 
-Traffic
 
-Room reverberation
 
-Competing speakers
+---
 
-Solution
+## ⚙️ Key Parameters
 
-This system behaves like a software-defined directional ear:
+| Parameter | Description |
+|--------|------------|
+| `K` | Number of microphones |
+| `J` | FIR taps per microphone |
+| `FS` | Sampling frequency |
+| `MU` | Adaptation step size |
+| `DURATION` | Recording length |
+| `SERIAL_PORT` | Input device |
+| `OUT_WAV` | Output file |
 
-Focuses on the speaker directly in front of the listener
+---
 
-Suppresses noise from other directions
+## 🧠 Algorithm Highlights
 
-Continuously adapts as the environment changes
+- Online learning (no prior noise statistics)
+- Hard linear constraints
+- Error-correcting weight updates
+- Stable long-term operation
 
-Why This Matters
+---
 
-✔️ Clear speech in noisy environments
-✔️ No need for pre-recorded calibration
-✔️ Works in real time
-✔️ Suitable for low-power embedded hardware
+## 📁 Output
 
-With minor modifications, this code can run on:
+- Mono WAV file
+- Normalized audio
+- Ready for playback or ML pipelines
 
-Wearable DSPs
+---
 
-ARM-based audio SoCs
+## 🚀 Future Extensions
 
-Hearing-aid research platforms
+- Dynamic beam steering
+- Embedded ARM/DSP deployment
+- Multi-beam outputs
+- Neural post-filtering
 
-🧩 Additional Applications
-🗣️ Smart Conference Room Speaker System
+---
 
-Imagine a conference table with pivoting microphone modules.
+## 📜 Reference
 
-How it works:
+- O. L. Frost III, *An Algorithm for Linearly Constrained Adaptive Array Processing*, Proceedings of the IEEE, 1972
 
-Each mic acts as a spatial sensor
+---
 
-At the push of a button, the “look direction” changes
+## 💬 Final Note
 
-The beamformer instantly re-locks onto the active speaker
+This project serves as a **foundation for real-world directional audio systems**, ranging from **hearing aids** to **smart classrooms** and **conference rooms**.
+"""
 
-Benefits:
+def write_readme(filename="README.md"):
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write(README_CONTENT.strip())
+    print(f"✅ {filename} has been created successfully.")
 
-Suppresses keyboard noise, AC hum, side conversations
-
-No lapel mics required
-
-Clean audio for hybrid meetings & recordings
-
-This code already supports this model—the look direction is controlled entirely by the constraint vector f.
-
-🎓 Classroom Lecture Recording Device
-
-Classrooms are acoustically hostile:
-
-Fan noise
-
-Student chatter
-
-Echo
-
-Distant instructors
-
-This system enables:
-
-Directional capture of the instructor’s voice
-
-Real-time suppression of ambient noise
-
-High-quality lecture recordings from the back of the room
-
-Perfect for:
-
-Lecture archiving
-
-MOOCs
-
-Accessibility recordings
-
-Note-taking assistants
-
-🧱 System Architecture
-[Mic Array] → [Serial Stream] → [Adaptive Beamformer] → [Clean Audio WAV]
-
-Key Components
-
-4 microphones (K = 4)
-
-12 FIR taps per mic (J = 12)
-
-Real-time serial audio ingestion
-
-Adaptive constrained LMS optimizer
-
-⚙️ How the Algorithm Works (Conceptual)
-
-Microphones capture synchronized samples
-
-Samples are stacked into a spatio-temporal vector
-
-The beamformer computes:
-
-Output signal y(k)
-
-Weight updates that minimize noise power
-
-Constraints ensure:
-
-Desired direction is never distorted
-
-Output audio is stored and normalized
-
-Crucially, the algorithm:
-
-Learns noise statistics on the fly
-
-Does not require prior room calibration
-
-Prevents constraint drift over time
-
-🧪 Configuration Parameters
-Parameter	Description
-K	Number of microphones
-J	FIR taps per microphone
-FS	Sampling frequency
-MU	Adaptation step size
-DURATION	Recording length
-SERIAL_PORT	Input device
-OUT_WAV	Output file
-
-Tuning MU allows you to trade off:
-
-Faster adaptation vs.
-
-Lower steady-state noise
-
-📁 Output
-
-Mono WAV file
-
-Normalized to prevent clipping
-
-Ready for playback, ML pipelines, or evaluation
-
-🧠 Research & Educational Value
-
-This project is ideal for:
-
-DSP coursework
-
-Adaptive filtering research
-
-Beamforming experimentation
-
-Assistive technology prototypes
-
-It bridges the gap between:
-📚 Classic signal-processing theory
-and
-⚙️ Modern real-time embedded systems
-
-🚀 Future Extensions
-
-Dynamic steering (head-tracking / button-based)
-
-Multi-beam output
-
-Integration with speech recognition
-
-Embedded ARM / DSP deployment
-
-Neural post-filtering
-
-📜 References
-
-O. L. Frost III, “An Algorithm for Linearly Constrained Adaptive Array Processing”, Proceedings of the IEEE, 1972 
-
-frost beamforming
+if __name__ == "__main__":
+    write_readme()
