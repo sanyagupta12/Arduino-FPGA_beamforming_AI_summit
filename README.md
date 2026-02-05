@@ -1,4 +1,4 @@
-# 🎧 Real-Time Adaptive Beamforming Using the Frost Algorithm  
+# 🎧 Real-Time Edge AI Adaptive Beamforming Using the Frost Algorithm  
 *A Multi-Microphone Audio Enhancement System*
 
 ---
